@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "main.C": "cpp",
-        "media.h": "c"
+        "media.h": "c",
+        "stdio.h": "c",
+        "locale.h": "c"
     }
 }
