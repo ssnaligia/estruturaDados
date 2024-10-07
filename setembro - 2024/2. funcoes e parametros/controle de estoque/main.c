@@ -1,14 +1,14 @@
 #include <stdio.h>
+#include <string.h> 
 #include <locale.h>
 #include "cliente/cliente.c"
 #include "produto/produto.c"
-#include "venda.c"
 
 int main() {
     int escolha, eConsulta;
 
     do {
-        printf("--- MENU CONTROLE DE ESTOQUE ---");
+        printf("\n\n--- MENU CONTROLE DE ESTOQUE ---\n");
         printf("\n1. Cadastro de Clientes");
         printf("\n2. Cadastro de Produtos");
         printf("\n3. Consultas");
@@ -25,7 +25,6 @@ int main() {
 
         switch (escolha) {
             case 1: {
-                printf("")
                 cadastroCliente();
                 break;
             }

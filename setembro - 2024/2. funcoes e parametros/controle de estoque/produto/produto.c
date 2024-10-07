@@ -1,7 +1,42 @@
 #include <stdio.h>
-#include "produto/produto.c"
-#include "venda.h"
+#include "produto.h"
 #define MAX_PRODUTOS 15
+
+typedef struct {
+    int codigo;
+    char nome[60];
+    float preco;
+    char validade[11];
+    int estoque;
+} Produto;
+
+Produto Produtos[MAX_PRODUTOS];
+int numProdutos = 0;
+int codigoAtual = 1;
+
+void cadastroProduto() {
+    if (numProdutos >= MAX_PRODUTOS) {
+        printf("Limite de produtos atingido!\n");
+        return;
+    }
+
+    Produto novoProduto;
+    novoProduto.codigo = codigoAtual;  
+    codigoAtual++;  
+
+    printf("\n\nDigite o nome do produto: ");
+    scanf(" %[^\n]", novoProduto.nome);
+    printf("\nDigite o preço: ");
+    scanf("%f", &novoProduto.preco);  
+    printf("\nDigite a data de vencimento (DD/MM/AAAA): ");
+    scanf("%s", novoProduto.validade);
+    printf("\nDigite a quantidade: ");
+    scanf("%d", &novoProduto.estoque);
+
+    Produtos[numProdutos++] = novoProduto;  
+
+    printf("\n\nProduto cadastrado com sucesso!\n");
+}
 
 void vendas() {
     int codigoProduto, quantidade, quantidades[MAX_PRODUTOS];
@@ -11,13 +46,13 @@ void vendas() {
     char continuar;
 
     do {
-        printf("Digite o código do produto que deseja comprar: ");
+        printf("\n\nDigite o código do produto que deseja comprar: ");
         scanf("%d", &codigoProduto);
 
         int encontrado = 0;
         for (int i = 0; i < numProdutos; i++) {
             if (Produtos[i].codigo == codigoProduto) {
-                printf("Produto encontrado: %s\n", Produtos[i].nome);
+                printf("\nProduto encontrado: %s\n", Produtos[i].nome);
                 printf("Digite a quantidade que deseja comprar: ");
                 scanf("%d", &quantidade);
 
@@ -30,7 +65,7 @@ void vendas() {
                     quantidades[numProdutosComprados] = quantidade;
                     numProdutosComprados++;
 
-                    printf("Subtotal: R$ %.2f\n", subtotal);
+                    printf("\nSubtotal: R$ %.2f\n", subtotal);
                 } else {
                     printf("Estoque insuficiente! Quantidade disponível: %d\n", Produtos[i].estoque);
                 }
@@ -44,12 +79,13 @@ void vendas() {
             printf("Produto não encontrado.\n");
         }
 
-        printf("Deseja continuar comprando? SIM(s) / NÃO(n): ");
+        printf("\nDeseja continuar comprando? SIM(s) / NÃO(n): ");
         scanf(" %c", &continuar);
 
     } while (continuar == 's');
 
-    printf("Total da compra: R$ %.2f\n", total);
+    if(continuar == 's') {
+        printf("\n\nTotal da compra: R$ %.2f\n", total);
 
     printf("Escolha a forma de pagamento:\n");
     printf("1. À vista (10%% de desconto)\n");
@@ -146,4 +182,36 @@ void vendas() {
     }
 
     printf("Venda concluída!\n");
+    
+    }
+}
+
+void baixaEstoque() {
+    int codigoProduto, quantidade;
+
+    printf("Digite o código do produto que deseja dar baixa no estoque: ");
+    scanf("%d", &codigoProduto);
+
+    int encontrado = 0;
+    for (int i = 0; i < numProdutos; i++) {
+        if (Produtos[i].codigo == codigoProduto) {
+            printf("Produto encontrado: %s\n", Produtos[i].nome);
+            printf("Digite a quantidade que deseja dar baixa: ");
+            scanf("%d", &quantidade);
+
+            if (quantidade <= Produtos[i].estoque) {
+                Produtos[i].estoque -= quantidade; 
+                printf("Baixa realizada com sucesso! Nova quantidade em estoque: %d\n", Produtos[i].estoque);
+            } else {
+                printf("Quantidade inválida! O estoque disponível é %d.\n", Produtos[i].estoque);
+            }
+
+            encontrado = 1;
+            break;
+        }
+    }
+
+    if (!encontrado) {
+        printf("Produto não encontrado.\n");
+    }
 }

@@ -19,26 +19,26 @@ void cadastroCliente() {
     }
 
     Cliente novoCliente;
-    printf("Digite o nome: ");
+    printf("\n\nDigite o nome: ");
     scanf(" %[^\n]", novoCliente.nome);
-    printf("Digite o CPF: ");
+    printf("\nDigite o CPF: ");
     scanf("%s", novoCliente.cpf);
     
     for (int i = 0; i < numClientes; i++) {
         if (strcmp(clientes[i].cpf, novoCliente.cpf) == 0) {
-            printf("Cliente já cadastrado com esse CPF.\n");
+            printf("\nCliente já cadastrado com esse CPF.\n");
             return;
         }
     }
 
-    printf("Digite o endereço: ");
+    printf("\nDigite o endereço: ");
     scanf(" %[^\n]", novoCliente.endereco);
-    printf("Digite o telefone: ");
+    printf("\nDigite o telefone: ");
     scanf("%s", novoCliente.telefone);
-    printf("Digite a data de nascimento (DD/MM/AAAA): ");
+    printf("\nDigite a data de nascimento (DD/MM/AAAA): ");
     scanf("%s", novoCliente.dataNascimento);
 
     clientes[numClientes++] = novoCliente;
 
-    printf("Cliente cadastrado com sucesso!\n");
+    printf("\n\nCliente cadastrado com sucesso!\n");
 }

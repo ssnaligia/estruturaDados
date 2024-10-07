@@ -1,5 +1,5 @@
-#ifndef produto.h.h
-    #define produto.h.h
+#ifndef PRODUTO_h
+    #define PRODUTO_h
     void cadastroProduto();
     void baixaEstoque();
 #endif
