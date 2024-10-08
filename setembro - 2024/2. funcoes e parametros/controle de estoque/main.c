@@ -2,10 +2,13 @@
 #include <string.h> 
 #include <locale.h>
 #include "cliente/cliente.c"
-#include "produto/produto.c"
+#include "produto/produto.c"          
 
 int main() {
     int escolha, eConsulta;
+    char produtos[MAX_PRODUTOS][60]; 
+    char datas[MAX_PRODUTOS][11];     
+    int numProdutos = 0;
 
     do {
         printf("\n\n--- MENU CONTROLE DE ESTOQUE ---\n");
@@ -34,7 +37,7 @@ int main() {
             }
             case 3: {
                 do {
-                    printf("-- CONSULTAS --");
+                    printf("\n\n-- CONSULTAS --");
                     printf("\n1. Produtos Cadastrados");
                     printf("\n2. Produtos a Vencer");
                     printf("\n3. Produtos Vencidos");
@@ -52,13 +55,11 @@ int main() {
 
                     switch (eConsulta) {
                         case 1: {
-                            // produtosCadastrados();
-                            printf("\nConsulta: Produtos Cadastrados.\n");
+                            produtosCadastrados();
                             break;
                         }
                         case 2: {
-                            // produtosAVencer();
-                            printf("\nConsulta: Produtos a Vencer.\n");
+                            produtosAVencer(produtos, datas, numProdutos);
                             break;
                         }
                         case 3: {
@@ -91,12 +92,10 @@ int main() {
             }
             case 4: {
                 vendas();
-                printf("\nVenda selecionada.\n");
                 break;
             }
             case 5: {
                 baixaEstoque();
-                printf("\nBaixa em Estoque selecionada.\n");
                 break;
             }
             case 6: {
