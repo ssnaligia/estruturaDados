@@ -21,7 +21,7 @@ int main() {
         printf("\n\nDigite a opção desejada: ");
         scanf("%d", &escolha);
 
-        if(escolha < 1 || escolha > 6) {
+        if (escolha < 1 || escolha > 6) {
             printf("\nOpção Inválida!\n");
             continue;
         }
@@ -48,7 +48,7 @@ int main() {
                     printf("\n\nDigite a opção desejada: ");
                     scanf("%d", &eConsulta);
 
-                    if(eConsulta < 1 || eConsulta > 7) {
+                    if (eConsulta < 1 || eConsulta > 7) {
                         printf("\nOpção Inválida!\n");
                         continue;
                     }
@@ -59,27 +59,40 @@ int main() {
                             break;
                         }
                         case 2: {
-                            produtosAVencer(produtos, datas, numProdutos);
+                            int dias;
+                            printf("\nQuantos dias? ");
+                            scanf("%d", &dias);
+                            produtosAVencer(dias);
                             break;
                         }
                         case 3: {
-                            // produtosVencidos();
-                            printf("\nConsulta: Produtos Vencidos.\n");
+                            produtosVencidos();
                             break;
                         }
                         case 4: {
-                            // clientesCadastrados();
-                            printf("\nConsulta: Clientes Cadastrados.\n");
+                            clientesCadastrados();
                             break;
                         }
                         case 5: {
-                            // totalVendas();
-                            printf("\nConsulta: Total de Vendas por Período.\n");
-                            break;
+                            char dataInicio[11], dataFim[11];
+
+                            getchar();
+
+                            printf("\nDigite a data de início (DD/MM/AAAA): ");
+                            fgets(dataInicio, sizeof(dataInicio), stdin);
+                            dataInicio[strcspn(dataInicio, "\n")] = 0; 
+
+                            getchar();
+
+                            printf("\nDigite a data de fim (DD/MM/AAAA): ");
+                            fgets(dataFim, sizeof(dataFim), stdin);
+                            dataFim[strcspn(dataFim, "\n")] = 0; 
+
+                            totalVendas(dataInicio, dataFim);
+                            break;  
                         }
                         case 6: {
-                            // quantidadeEmEstoque();
-                            printf("\nConsulta: Quantidade em Estoque por Produto.\n");
+                            quantidadeEmEstoque();
                             break;
                         }
                         case 7: {

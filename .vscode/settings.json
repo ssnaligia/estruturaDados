@@ -4,6 +4,8 @@
         "media.h": "c",
         "stdio.h": "c",
         "locale.h": "c",
-        "string.h": "c"
+        "string.h": "c",
+        "cliente.c": "cpp",
+        "produto.c": "cpp"
     }
 }

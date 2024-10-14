@@ -42,3 +42,16 @@ void cadastroCliente() {
 
     printf("\n\nCliente cadastrado com sucesso!\n");
 }
+
+void clientesCadastrados() {
+    if (numClientes == 0) {
+        printf("\nNenhum cliente cadastrado.\n");
+        return;
+    }
+    printf("\n--- CLIENTES CADASTRADOS ---\n\n");
+    for (int i = 0; i < numClientes; i++) {
+        printf("Nome: %s | CPF: %s | Telefone: %s | Data de Nascimento: %s\n",
+               clientes[i].nome, clientes[i].cpf, clientes[i].telefone,
+               clientes[i].dataNascimento);
+    }
+}

@@ -1,6 +1,10 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <time.h>
 #include "produto.h"
 #define MAX_PRODUTOS 15
+#define MAX_VENDAS 100
 
 typedef struct {
     int codigo;
@@ -10,9 +14,16 @@ typedef struct {
     int estoque;
 } Produto;
 
+typedef struct {
+    float valorTotal;
+    char data[11]; 
+} Venda;
+
 Produto Produtos[MAX_PRODUTOS];
+Venda Vendas[MAX_VENDAS];
 int numProdutos = 0;
 int codigoAtual = 1;
+int numVendas = 0;
 
 void cadastroProduto() {
     if (numProdutos >= MAX_PRODUTOS) {
@@ -22,7 +33,7 @@ void cadastroProduto() {
 
     Produto novoProduto;
     novoProduto.codigo = codigoAtual;  
-    codigoAtual++;  
+    codigoAtual++; 
 
     printf("\n\nDigite o nome do produto: ");
     scanf(" %[^\n]", novoProduto.nome);
@@ -41,7 +52,7 @@ void cadastroProduto() {
     printf("\nDigite a quantidade: ");
     scanf("%d", &novoProduto.estoque);
 
-    Produtos[numProdutos++] = novoProduto;  
+    Produtos[numProdutos++] = novoProduto; 
 
     printf("\n\nProduto cadastrado com sucesso!\n");
 }
@@ -51,266 +62,227 @@ void produtosCadastrados() {
         printf("Nenhum produto cadastrado.\n");
         return;
     }
-
-    printf("\n--- PRODUTOS CADASTRADOS ---\n");
-    printf("\n\n%-10s %-30s %-10s %-12s %-10s\n", "Código", "Nome", "Preço", "Validade", "Estoque");
-    printf("---------------------------------------------------------------------------------\n");
-
-    for (int i = 0; i < numProdutos; i++) {
-        printf("%-10d %-30s R$ %-9.2f %-12s %d\n", 
-            Produtos[i].codigo, 
-            Produtos[i].nome, 
-            Produtos[i].preco, 
-            Produtos[i].validade, 
-            Produtos[i].estoque);
+    printf("\n--- PRODUTOS CADASTRADOS ---\n\n");
+    for (int i = 0; i <numProdutos; i++) {
+        printf("Código: %d | Nome: %s | Valor: %.2f | Validade: %s | Quantidade: %d\n",
+               Produtos[i].codigo, Produtos[i].nome, Produtos[i].preco,
+               Produtos[i].validade, Produtos[i].estoque);
     }
-    printf("----------------------------------------------------------------------------------\n");
 }
 
-int compararDatas(const char *data1, const char *data2) {
-    int dia1, mes1, ano1;
-    int dia2, mes2, ano2;
-
-    sscanf(data1, "%d/%d/%d", &dia1, &mes1, &ano1);
-    sscanf(data2, "%d/%d/%d", &dia2, &mes2, &ano2);
-
-    // Comparar anos
-    if (ano1 != ano2) {
-        return ano1 - ano2;
-    }
-
-    // Comparar meses
-    if (mes1 != mes2) {
-        return mes1 - mes2;
-    }
-
-    // Comparar dias
-    return dia1 - dia2;
-}
-
-// Função para adicionar dias a uma data
-void adicionarDias(const char* data, int dias, char* novaData) {
-    int dia, mes, ano;
-    sscanf(data, "%d/%d/%d", &dia, &mes, &ano);
-
-    // Ajustes para os meses e seus dias
-    int diasPorMes[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }; // Meses de 1 a 12
-
-    dia += dias;
-
-    // Se a data está fora do mês, ajusta o mês e o ano
-    while (dia > diasPorMes[mes]) {
-        dia -= diasPorMes[mes];
-        mes++;
-        if (mes > 12) {
-            mes = 1;
-            ano++;
-        }
-    }
-
-    sprintf(novaData, "%02d/%02d/%04d", dia, mes, ano);
-}
-
-void produtosAVencer(char produtos[][60], char datas[][11], int numProdutos) {
-    char dataAtual[11];
-    int xDias;
-
-    // Solicitar ao usuário a data atual e a quantidade de dias
-    printf("Digite a data atual (DD/MM/AAAA): ");
-    scanf("%s", dataAtual);
-
-    printf("Digite a quantidade de dias: ");
-    scanf("%d", &xDias);
-
-    char dataLimite[11];
-    adicionarDias(dataAtual, xDias, dataLimite);  // Calcula a nova data
-
+void produtosAVencer(int dias) {
     int encontrouProduto = 0;
 
-    printf("\nProdutos a vencer nos próximos %d dias a partir de %s:\n", xDias, dataAtual);
+    time_t agora = time(NULL);
+    struct tm *tm_atual = localtime(&agora);
+    
+    tm_atual->tm_mday += dias;
+    time_t dataFutura = mktime(tm_atual);
+
+    printf("\n--- PRODUTOS COM VALIDADE EM ATÉ %d DIAS (QUE AINDA NÃO VENCERAM) ---\n\n", dias);
+    
     for (int i = 0; i < numProdutos; i++) {
-        // Verifica se a data de vencimento é maior ou igual à data atual e menor ou igual à data limite
-        if (compararDatas(datas[i], dataAtual) >= 0 && compararDatas(datas[i], dataLimite) <= 0) {
-            printf("%s - Vencimento: %s\n", produtos[i], datas[i]);
+        struct tm tm_validade = {0};
+        
+        strptime(Produtos[i].validade, "%d/%m/%Y", &tm_validade);
+        time_t validadeProduto = mktime(&tm_validade);
+        
+        if (validadeProduto > agora && difftime(validadeProduto, agora) <= dias * 86400) {
+            printf("Código: %d | Nome: %s | Validade: %s\n", 
+                   Produtos[i].codigo, Produtos[i].nome, Produtos[i].validade);
             encontrouProduto = 1;
         }
     }
 
     if (!encontrouProduto) {
-        printf("Nenhum produto a vencer nos próximos %d dias a partir de %s.\n", xDias, dataAtual);
+        printf("\n\nNenhum produto a vencer nos próximos %d dias.\n", dias);
     }
 }
 
+void produtosVencidos() {
+    time_t agora = time(NULL);
+    printf("\n--- PRODUTOS VENCIDOS ---\n\n");
+    for (int i = 0; i < numProdutos; i++) {
+        struct tm tm_validade;
+        strptime(Produtos[i].validade, "%d/%m/%Y", &tm_validade);
+        if (difftime(mktime(&tm_validade), agora) < 0) {
+            printf("Código: %d | Nome: %s | Validade: %s\n", 
+                   Produtos[i].codigo, Produtos[i].nome, Produtos[i].validade);
+        }
+    }
+}
 
 void vendas() {
-    int codigoProduto, quantidade, quantidades[MAX_PRODUTOS];
-    int produtosComprados[MAX_PRODUTOS];
-    int numProdutosComprados = 0;
-    float total = 0.0, valorPago, troco;
-
+    int codigo, quantidade;
+    float subtotal = 0.0, total = 0.0, valorPago = 0.0, troco = 0.0;
+    int opcaoPagamento, parcelas = 1;
+    char dataVenda[11];
+    
     printf("\n\nDigite o código do produto que deseja comprar: ");
-    scanf("%d", &codigoProduto);
+    scanf("%d", &codigo);
+    getchar();  
 
-    int encontrado = 0;
+    int produtoIndex = -1;
     for (int i = 0; i < numProdutos; i++) {
-        if (Produtos[i].codigo == codigoProduto) {
-            printf("\nProduto encontrado: %s\n", Produtos[i].nome);
-            printf("\nDigite a quantidade que deseja comprar: ");
-            
-            if (scanf("%d", &quantidade) != 1) {
-                printf("Entrada inválida para quantidade! Tente novamente.\n");
-                while (getchar() != '\n'); 
-                return; 
-            }
-
-            if (quantidade <= Produtos[i].estoque) {
-                float subtotal = Produtos[i].preco * quantidade;
-                total += subtotal;
-
-                produtosComprados[numProdutosComprados] = i; 
-                quantidades[numProdutosComprados] = quantidade;
-                numProdutosComprados++;
-
-                printf("Subtotal: R$ %.2f\n", subtotal);
-            } else {
-                printf("\nEstoque insuficiente! Quantidade disponível: %d\n", Produtos[i].estoque);
-                return; 
-            }
-
-            encontrado = 1;
+        if (Produtos[i].codigo == codigo) {
+            produtoIndex = i;
             break;
         }
     }
 
-    if (encontrado) {
-        printf("\n\nTotal da compra: R$ %.2f\n", total);
+    if (produtoIndex == -1) {
+        printf("\n\nProduto não encontrado!\n");
+        return;
+    }
 
-        printf("\n\nFORMAS DE PAGAMENTO\n");
-        printf("1. À vista (10%% de desconto)\n");
-        printf("2. Parcelado em 3x (sem juros)\n");
-        printf("3. Parcelado de 4x a 6x (com 10%% de juros)\n");
-        printf("\nEscolha a forma de pagamento: ");
-        int formaPagamento;
-        scanf("%d", &formaPagamento);
+    printf("\nProduto encontrado: %s\n", Produtos[produtoIndex].nome);
+    
+    printf("\nDigite a quantidade que deseja comprar: ");
+    scanf("%d", &quantidade);
+    getchar();  
 
-        switch (formaPagamento) {
-            case 1:
-                //pagamento à vista com desconto de 10%
-                total *= 0.9;  
-                printf("\n\nTotal com desconto (à vista): R$ %.2f\n", total);
+    if (Produtos[produtoIndex].estoque < quantidade) {
+        printf("\nEstoque insuficiente!\n");
+        return;
+    }
 
-                printf("\nDigite o valor pago pelo cliente: R$ ");
-                scanf("%f", &valorPago);
+    subtotal = Produtos[produtoIndex].preco * quantidade;
+    printf("\n\nSubtotal: R$ %.2f\n", subtotal);
 
-                if (valorPago >= total) {
-                    troco = valorPago - total;
-                    printf("Pagamento aceito.\n");
-                    printf("\nTroco: R$ %.2f\n", troco);
+    printf("\n\nFORMAS DE PAGAMENTO\n");
+    printf("1. À vista (10%% de desconto)\n");
+    printf("2. Parcelado em 3x (sem juros)\n");
+    printf("3. Parcelado de 4x a 6x (com 10%% de juros)\n");
 
-                    for (int i = 0; i < numProdutosComprados; i++) {
-                        Produtos[produtosComprados[i]].estoque -= quantidades[i];
-                    }
-                    printf("\nEstoque atualizado com sucesso.\n");
-                } else {
-                    printf("\nValor pago insuficiente. Faltam R$ %.2f\n", total - valorPago);
-                    return; 
-                }
-                break;
+    printf("Escolha a forma de pagamento: ");
+    scanf("%d", &opcaoPagamento);
+    getchar();  
 
-            case 2: {
-                //pagamento parcelado em 3x sem juros
-                float parcela = total / 3;
-                printf("\n\nTotal parcelado em 3x de R$ %.2f\n", parcela);
-
-                printf("\nDigite o valor pago referente à primeira parcela: R$ ");
-                scanf("%f", &valorPago);
-
-                if (valorPago >= parcela) {
-                    troco = valorPago - parcela;
-                    printf("Pagamento da primeira parcela aceito.\n");
-                    printf("\nTroco da primeira parcela: R$ %.2f\n", troco);
-
-                    for (int i = 0; i < numProdutosComprados; i++) {
-                        Produtos[produtosComprados[i]].estoque -= quantidades[i];
-                    }
-                    printf("\nEstoque atualizado com sucesso.\n");
-                } else {
-                    printf("\nValor pago insuficiente para a primeira parcela. Faltam R$ %.2f\n", parcela - valorPago);
-                    return; 
-                }
-                break;
-            }
-
-            case 3: {
-                //pagamento parcelado de 4x a 6x com 10% de juros
-                total *= 1.1; 
-                int parcelas;
-                printf("\n\nEscolha entre 4 a 6 parcelas: ");
-                scanf("%d", &parcelas);
-
-                if (parcelas >= 4 && parcelas <= 6) {
-                    float parcela = total / parcelas;
-                    printf("\n\nTotal parcelado em %dx de R$ %.2f\n", parcelas, parcela);
-
-                    printf("\nDigite o valor pago referente à primeira parcela: R$ ");
-                    scanf("%f", &valorPago);
-
-                    if (valorPago >= parcela) {
-                        troco = valorPago - parcela;
-                        printf("Pagamento da primeira parcela aceito.\n");
-                        printf("\nTroco da primeira parcela: R$ %.2f\n", troco);
-
-                        for (int i = 0; i < numProdutosComprados; i++) {
-                            Produtos[produtosComprados[i]].estoque -= quantidades[i];
-                        }
-                        printf("\nEstoque atualizado com sucesso.\n");
-                    } else {
-                        printf("\nValor pago insuficiente para a primeira parcela. Faltam R$ %.2f\n", parcela - valorPago);
-                        return; 
-                    }
-                } else {
-                    printf("\nNúmero de parcelas inválido!\n");
-                }
-                break;
-            }
-
-            default:
-                printf("\nForma de pagamento inválida.\n");
+    switch(opcaoPagamento) {
+        case 1:  //à vista com 10% de desconto
+            total = subtotal * 0.9;
+            printf("\nTotal à vista com 10%% de desconto: R$ %.2f\n", total);
+            break;
+        case 2:  //parcelado em 3x sem juros
+            total = subtotal;
+            parcelas = 3;
+            printf("\nTotal parcelado em 3x de R$ %.2f\n", total / parcelas);
+            break;
+        case 3:  //parcelado de 4x a 6x com 10% de juros
+            total = subtotal * 1.1;
+            printf("\n\nDigite o número de parcelas (4 a 6): ");
+            scanf("%d", &parcelas);
+            getchar();  
+            if (parcelas < 4 || parcelas > 6) {
+                printf("\nNúmero de parcelas inválido!\n");
                 return;
-        }
+            }
+            printf("\n\nTotal parcelado em %dx de R$ %.2f\n", parcelas, total / parcelas);
+            break;
+        default:
+            printf("\nOpção de pagamento inválida!\n");
+            return;
+    }
 
+    printf("\nDigite a data da venda (DD/MM/AAAA): ");
+    fgets(dataVenda, sizeof(dataVenda), stdin);
+    dataVenda[strcspn(dataVenda, "\n")] = 0; 
+
+    printf("\nDigite o valor pago referente à primeira parcela: R$ ");
+    scanf("%f", &valorPago);
+
+    if (valorPago >= (total / parcelas)) {
+        troco = valorPago - (total / parcelas);
+        printf("\nPagamento aceito.\nTroco: R$ %.2f\n", troco);
+
+        Produtos[produtoIndex].estoque -= quantidade;
+        registrarVenda(total, dataVenda);  
+        printf("\n\nEstoque atualizado com sucesso.\n");
         printf("\nVenda concluída!\n");
     } else {
-        printf("\nProduto não encontrado.\n");
+        printf("\nValor insuficiente!\n");
+    }
+}
+
+void registrarVenda(float total, const char *dataVenda) {
+    if (numVendas >= MAX_VENDAS) {
+        printf("\n\nLimite de vendas atingido!\n");
+        return;
+    }
+    
+    Vendas[numVendas].valorTotal = total;
+    strcpy(Vendas[numVendas].data, dataVenda);
+    numVendas++;
+}
+
+time_t converteData(const char *data) {
+    struct tm tm_data = {0};
+    strptime(data, "%d/%m/%Y", &tm_data);
+    return mktime(&tm_data);
+}
+
+void totalVendas(const char *dataInicio, const char *dataFim) {
+    time_t inicio = converteData(dataInicio); 
+    time_t fim = converteData(dataFim); 
+    
+    float total = 0.0;
+
+    printf("\n\n--- TOTAL DE VENDAS DE %s ATÉ %s ---\n", dataInicio, dataFim);
+
+    for (int i = 0; i < numVendas; i++) {
+        time_t dataVenda = converteData(Vendas[i].data);
+        
+        if (dataVenda >= inicio && dataVenda <= fim) {
+            total += Vendas[i].valorTotal;
+            printf("\nVENDA DE R$%.2f EM %s\n", Vendas[i].valorTotal, Vendas[i].data);
+        }
+    }
+
+    printf("\n\nTOTAL DE VENDAS NO PERÍODO: R$%.2f\n", total);
+}
+
+void quantidadeEmEstoque() {
+    if (numProdutos == 0) {
+        printf("\nNenhum produto cadastrado.\n");
+        return;
+    }
+
+    printf("\n--- QUANTIDADE EM ESTOQUE EM PRODUTO ---\n\n");
+    
+    for (int i = 0; i < numProdutos; i++) {
+        printf("Código: %d | Nome: %s | Estoque: %d\n", 
+               Produtos[i].codigo, Produtos[i].nome, Produtos[i].estoque);
     }
 }
 
 void baixaEstoque() {
-    int codigoProduto, quantidade;
+    int codigo, quantidade;
 
     printf("\n\nDigite o código do produto que deseja dar baixa no estoque: ");
-    scanf("%d", &codigoProduto);
+    scanf("%d", &codigo);
 
-    int encontrado = 0;
+    int produtoIndex = -1;
     for (int i = 0; i < numProdutos; i++) {
-        if (Produtos[i].codigo == codigoProduto) {
-            printf("Produto encontrado: %s\n", Produtos[i].nome);
-            printf("\n\nDigite a quantidade que deseja dar baixa: ");
-            scanf("%d", &quantidade);
-
-            if (quantidade <= Produtos[i].estoque) {
-                Produtos[i].estoque -= quantidade; 
-                printf("\n\nBaixa realizada com sucesso! Nova quantidade em estoque: %d\n", Produtos[i].estoque);
-            } else {
-                printf("\n\nQuantidade inválida! O estoque disponível é %d.\n", Produtos[i].estoque);
-            }
-
-            encontrado = 1;
+        if (Produtos[i].codigo == codigo) {
+            produtoIndex = i;
             break;
         }
     }
 
-    if (!encontrado) {
-        printf("\nProduto não encontrado.\n");
+    if (produtoIndex == -1) {
+        printf("\nProduto não encontrado!\n");
+        return;
+    }
+
+    printf("\nProduto encontrado: %s\n", Produtos[produtoIndex].nome);
+    
+    printf("\nDigite a quantidade que deseja dar baixa: ");
+    scanf("%d", &quantidade);
+
+    if (Produtos[produtoIndex].estoque < quantidade) {
+        printf("\nQuantidade inválida, estoque insuficiente!\n");
+    } else {
+        Produtos[produtoIndex].estoque -= quantidade;
+        printf("\nBaixa realizada com sucesso! Nova quantidade em estoque: %d\n", Produtos[produtoIndex].estoque);
     }
 }
