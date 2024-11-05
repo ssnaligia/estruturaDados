@@ -9,9 +9,8 @@ int main() {
     p = criaPto(10, 21);
     q = criaPto(7, 25);
 
-
     dist = distanciaPto(p, q);
-    printf("Distância entre os pontos: %f\n", dist);
+    printf("Distância entre os pontos: %.1f\n", dist);
 
     liberaPto(p);
     liberaPto(q);
