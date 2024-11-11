@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include "util.h"
 
-#define TOTAL_REGISTROS 1000000
-
 int main(int argc, char const *argv[]) {
     int arrayNumerosOrdenados[TOTAL_REGISTROS];
     int indices[TOTAL_REGISTROS / INTERVALO_INDEX];
