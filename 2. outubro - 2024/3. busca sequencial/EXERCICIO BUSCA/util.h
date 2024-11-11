@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define TOTAL_REGISTROS 1000000
 #define INTERVALO_INDEX 1000
 #define NUMEROS_EXIBIR 10 
 
