@@ -8,7 +8,7 @@
 
 <h2 align="left">| Descrição ℹ️</h2>
 
-##
+###
 
 <p align="left">O programa gera um array de números inteiros ordenados e permite ao usuário buscar por valores específicos dentro desse array. Se o valor buscado estiver presente, o programa informa a posição do valor e o índice correspondente na tabela de índices.</p>
 
