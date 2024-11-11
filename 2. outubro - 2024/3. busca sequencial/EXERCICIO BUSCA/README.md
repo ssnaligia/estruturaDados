@@ -8,7 +8,7 @@
 
 <h2 align="left">| Descrição ℹ️</h2>
 
-###
+##
 
 <p align="left">O programa gera um array de números inteiros ordenados e permite ao usuário buscar por valores específicos dentro desse array. Se o valor buscado estiver presente, o programa informa a posição do valor e o índice correspondente na tabela de índices.</p>
 
@@ -17,8 +17,6 @@
 <h3 align="left">Mas afinal, o que é Busca Sequencial? 🤔</h3>
 
 ###
-
-<br clear="both">
 
 <p align="left">A busca sequencial consiste em percorrer cada elemento de uma lista ou array um a um até encontrar o valor desejado ou chegar ao final da lista. Este método é ineficiente para grandes conjuntos de dados, pois pode exigir um número significativo de comparações, especialmente se o valor desejado estiver perto do final da lista ou não estiver presente.</p>
 
