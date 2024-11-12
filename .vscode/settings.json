@@ -6,6 +6,10 @@
         "locale.h": "c",
         "string.h": "c",
         "cliente.c": "cpp",
-        "produto.c": "cpp"
+        "produto.c": "cpp",
+        "listasequencial.c": "cpp",
+        "stdlib.h": "c",
+        "funcionario.h": "c",
+        "ordenado.h": "c"
     }
 }
