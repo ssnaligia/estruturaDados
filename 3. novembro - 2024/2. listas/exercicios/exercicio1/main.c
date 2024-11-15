@@ -7,11 +7,11 @@
 
 int main(){
     struct Funcionario vetFuncionario[qtde] = {
-						 {"Lucas","123","Carro"},
-                         {"Beatriz","456","Patinete"},
-                         {"Mariana","789","Monociclo"},
-                         {"Junior","963","Bicicleta"},
-                         {"Carlos","741","Moto"}
+						 {"123", "Lucas", "Carro"},
+                         {"456", "Beatriz", "Patinete"},
+                         {"789", "Mariana", "Monociclo"},
+                         {"963", "Junior", "Bicicleta"},
+                         {"741", "Carlos", "Moto"}
 	};
 
     Lista* list = criaLista(); 

@@ -14,17 +14,11 @@ typedef struct lista Lista;
 Lista* criaLista();
 
 int insereFuncionario(Lista* list, struct Funcionario funcionario);
-
 int  consultaCPF(Lista* list, char* numeroCPF, struct Funcionario *funcio);
-
 int tamLista(Lista* list);
-
 int listaCheia(Lista* list);
-
 int listaVazia(Lista* list);
-
 void imprimeLista(Lista* list);
-
 void apagaLista(Lista* list);
 
 

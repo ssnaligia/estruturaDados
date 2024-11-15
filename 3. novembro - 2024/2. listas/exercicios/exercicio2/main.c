@@ -8,13 +8,16 @@ int main() {
     scanf("%d", &n);
 
     if (n > MAX) {
-        printf("O número de elementos excede o limite máximo de %d.\n", MAX);
+        printf("\nO número de elementos excede o limite máximo de %d.\n", MAX);
+        return 1;
+    } else if(n <= 0) {
+        printf("\nO número de elementos não pode ser menor ou igual a 0.\n");
         return 1;
     }
 
     No A[MAX], B[MAX];
 
-    printf("Digite os elementos da lista A (desordenados): \n");
+    printf("\nDigite os elementos da lista A (Desordenados): \n");
     for (int i = 0; i < n; i++) {
         printf("Elemento %d: ", i + 1);
         scanf("%d", &A[i].valor);
@@ -22,10 +25,10 @@ int main() {
 
     ordenarLista(A, B, n);
 
-    printf("Lista A (desordenada): ");
+    printf("\nLista A (Desordenada): ");
     imprimirLista(A, n);
 
-    printf("Lista B (ordenada): ");
+    printf("\nLista B (Ordenada): ");
     imprimirLista(B, n);
 
     return 0;
