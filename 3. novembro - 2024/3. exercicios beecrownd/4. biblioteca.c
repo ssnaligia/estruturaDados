@@ -3,30 +3,29 @@
 #include <string.h>
 
 int main() {
-    int N, posicao;
-    scanf("%d %d", &N, &posicao);
+    int N;
+    char *livros[1000];
     
-    char *alunos[N];  
-    
-    for (int i = 0; i < N; i++) {
-        alunos[i] = (char *)malloc(21 * sizeof(char));  
-        scanf("%s", alunos[i]);
-    }
-    
-    for (int i = 0; i < N - 1; i++) {
-        for (int j = 0; j < N - i - 1; j++) {
-            if (strcmp(alunos[j], alunos[j + 1]) > 0) {
-                char *temp = alunos[j];
-                alunos[j] = alunos[j + 1];
-                alunos[j + 1] = temp;
+    while (scanf("%d", &N) != EOF) {
+        for (int i = 0; i < N; i++) {
+            livros[i] = (char *)malloc(5 * sizeof(char));
+            scanf("%s", livros[i]);
+        }
+        
+        for (int i = 0; i < N - 1; i++) {
+            for (int j = 0; j < N - i - 1; j++) {
+                if (strcmp(livros[j], livros[j + 1]) > 0) {
+                    char *temp = livros[j];
+                    livros[j] = livros[j + 1];
+                    livros[j + 1] = temp;
+                }
             }
         }
-    }
-    
-    printf("%s\n", alunos[posicao - 1]);  
-    
-    for (int i = 0; i < N; i++) {
-        free(alunos[i]);
+        
+        for (int i = 0; i < N; i++) {
+            printf("%s\n", livros[i]);
+            free(livros[i]);
+        }
     }
 
     return 0;

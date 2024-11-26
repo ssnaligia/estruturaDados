@@ -7,14 +7,17 @@
 int main() {
     int N;
     scanf("%d", &N);
-    getchar();  
-    
-    while (N--) {
+    getchar();
+
+    for (int t = 0; t < N; t++) {
         char itens[MAX_ITENS][MAX_TAMANHO_ITEM];
         int numItens = 0;
         char temp[MAX_TAMANHO_ITEM];
-        
-        while (scanf("%20s", temp) == 1) {
+
+        while (1) {
+            if (scanf("%20s", temp) != 1) {
+                break;
+            }
             int existe = 0;
             for (int i = 0; i < numItens; i++) {
                 if (strcmp(itens[i], temp) == 0) {
@@ -26,9 +29,11 @@ int main() {
                 strcpy(itens[numItens], temp);
                 numItens++;
             }
-            if (getchar() == '\n') break;
+            if (getchar() == '\n') {
+                break;
+            }
         }
-        
+
         for (int i = 0; i < numItens - 1; i++) {
             for (int j = 0; j < numItens - 1 - i; j++) {
                 if (strcmp(itens[j], itens[j + 1]) > 0) {
@@ -39,13 +44,13 @@ int main() {
                 }
             }
         }
-        
+
         for (int i = 0; i < numItens; i++) {
             if (i > 0) printf(" ");
             printf("%s", itens[i]);
         }
         printf("\n");
     }
-    
+
     return 0;
 }
