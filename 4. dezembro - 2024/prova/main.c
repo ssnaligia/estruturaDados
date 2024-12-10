@@ -2,10 +2,16 @@
 #include "funcoes.h"
 
 int main() {
-    SalaTeorica salas[3];
+    SalaTeorica salas[12];
     Laboratorio labs[2];
+    SalaAdministrativa salasAdm[6];
+    SalaProfessor salasProf[14];
+    EspacoDeUso espacos[1];
+    Patio patios[2];
+    Geral gerais[5];
+    Manutencao salasMan[3];
 
-    definirDadosIniciais(salas, labs);
+    definirDadosIniciais(salas, labs, salasAdm, salasProf, espacos, patios, gerais, salasMan);
 
     int opcao;
     do {
