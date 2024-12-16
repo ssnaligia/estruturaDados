@@ -71,6 +71,17 @@
         int capacidadeMaxima;
     } Geral;
 
+    typedef struct {
+        SalaTeorica salas[MAX_SALAS];
+        Laboratorio laboratorios[MAX_LABS];
+        SalaAdministrativa salasAdm[MAX_SALAS_ADM];
+        SalaProfessor salasProf[MAX_SALAS_PROF];
+        EspacoDeUso espacos[MAX_ESPACOS];
+        Patio patios[MAX_PATIOS];
+        Manutencao salasMan[MAX_MANUTENCAO];
+        Geral salasGerais[MAX_GERAIS];
+    } ListaSalas;
+
     void cadastrarEspacos(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan, const char *tipoEspaco);
 
     void definirDadosIniciais(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan);
@@ -81,5 +92,5 @@
 
     void listarPorTipo(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan, const char *tipo);
 
-    void exibirEstatisticas( SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan);
+    void calcularTaxaOcupacaoPorTipo(ListaSalas *lista_salas);
 #endif

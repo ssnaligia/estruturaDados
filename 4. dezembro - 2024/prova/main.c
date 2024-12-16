@@ -13,6 +13,7 @@ int main() {
     Patio *patios = malloc(MAX_PATIOS * sizeof(Patio));
     Geral *gerais = malloc(MAX_GERAIS * sizeof(Geral));
     Manutencao *salasMan = malloc(MAX_MANUTENCAO * sizeof(Manutencao));
+    ListaSalas *lista_salas = malloc(sizeof(ListaSalas));
 
     if (!salas || !laboratorios || !salasAdm || !salasProf || !espacos || !patios || !gerais || !salasMan) {
         printf("Erro ao alocar memória.\n");
@@ -147,7 +148,7 @@ int main() {
                 }
                 break;
             case 5:
-                exibirEstatisticas(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan);
+                calcularTaxaOcupacaoPorTipo(lista_salas);
                 break;
             case 6:
                 printf("\nEncerrando o programa.\n");
