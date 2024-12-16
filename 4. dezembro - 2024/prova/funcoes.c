@@ -537,7 +537,6 @@ int calcularComputadoresNecessarios(void *espacos, int quantidade, int tamanhoEl
     return totalNecessario;
 }
 
-
 void exibirEstatisticas( SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan) {
     printf("\n--- Estatísticas de Ocupação ---\n");
     printf("Taxa de Ocupação das Salas Teóricas: %.2f%%\n", calcularTaxaOcupacao(salas, MAX_SALAS, sizeof(SalaTeorica)) * 100);
