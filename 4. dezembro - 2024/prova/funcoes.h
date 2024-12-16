@@ -79,7 +79,7 @@
         EspacoDeUso espacos[MAX_ESPACOS];
         Patio patios[MAX_PATIOS];
         Manutencao salasMan[MAX_MANUTENCAO];
-        Geral salasGerais[MAX_GERAIS];
+        Geral gerais[MAX_GERAIS];
     } ListaSalas;
 
     void cadastrarEspacos(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan, const char *tipoEspaco);
@@ -92,5 +92,5 @@
 
     void listarPorTipo(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan, const char *tipo);
 
-    void calcularTaxaOcupacaoPorTipo(ListaSalas *lista_salas);
+    void exibirEstatisticas( SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan);
 #endif

@@ -148,7 +148,7 @@ int main() {
                 }
                 break;
             case 5:
-                calcularTaxaOcupacaoPorTipo(lista_salas);
+                exibirEstatisticas(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan);
                 break;
             case 6:
                 printf("\nEncerrando o programa.\n");

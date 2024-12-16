@@ -501,24 +501,63 @@ void listarPorTipo(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministra
     }
 }
 
-void calcularTaxaOcupacaoPorTipo(ListaSalas *lista_salas) {
-    float taxaOcupacao = 0;
+double calcularTaxaOcupacao(void *espacos, int quantidade, int tamanhoElemento) {
 
-    printf("--- Taxa de Ocupação das Salas Teóricas ---");
-    for (int i = 0; i < MAX_SALAS; i++) {
-        taxaOcupacao = (((float) lista_salas->salas[i].capacidadeAtual/lista_salas->salas[i].capacidadeMaxima)*100);
-        printf("Sala %s do Bloco %s: %.2f", lista_salas->salas[i].identificacao, lista_salas->salas[i].bloco, taxaOcupacao);
-    }
-}
+    int somaAtual = 0, somaMaxima = 0;
 
-int calcularComputadoresNecessarios(Laboratorio *laboratorios, int quantidadeLabs) {
-    int totalNecessario = 0;
+    for (int i = 0; i < quantidade; i++) {
 
-    for (int i = 0; i < quantidadeLabs; i++) {
-        if (laboratorios[i].capacidadeMaxima > laboratorios[i].capacidadeAtual) {
-            totalNecessario += laboratorios[i].capacidadeMaxima - laboratorios[i].capacidadeAtual;
+        void *espaco = (char *)espacos + i * tamanhoElemento;
+
+        int capacidadeAtual = *(int *)((char *)espaco + sizeof(char) * 20 + sizeof(char) * 10);  
+
+        int capacidadeMaxima = *(int *)((char *)espaco + sizeof(char) * 20 + sizeof(char) * 10 + sizeof(int));
+
+        if (capacidadeMaxima > 0) { 
+
+            somaAtual += capacidadeAtual;
+
+            somaMaxima += capacidadeMaxima;
+
         }
     }
 
+    return somaMaxima == 0 ? 0 : (double)somaAtual / somaMaxima;
+}
+
+int calcularComputadoresNecessarios(void *espacos, int quantidade, int tamanhoElemento, int tipoEspaco) {
+
+    int totalNecessario = 0;
+
+    for (int i = 0; i < quantidade; i++) {
+
+        void *espaco = (char *)espacos + i * tamanhoElemento;
+
+        if (tipoEspaco == 1) {  
+            int capacidadeAtual = *(int *)((char *)espaco + sizeof(char) * 20 + sizeof(char) * 10);
+            int capacidadeMaxima = *(int *)((char *)espaco + sizeof(char) * 20 + sizeof(char) * 10 + sizeof(int));
+
+            if (capacidadeMaxima > capacidadeAtual) {
+                totalNecessario += capacidadeMaxima - capacidadeAtual;
+            }
+        }
+    }
     return totalNecessario;
+}
+
+void exibirEstatisticas( SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan) {
+    printf("\n--- Estatísticas de Ocupação ---\n");
+    printf("Taxa de Ocupação das Salas Teóricas: %.2f%%\n", calcularTaxaOcupacao(salas, MAX_SALAS, sizeof(SalaTeorica)) * 100);
+    printf("Taxa de Ocupação dos Laboratórios: %.2f%%\n", calcularTaxaOcupacao(laboratorios, MAX_LABS, sizeof(Laboratorio)) * 100);
+    printf("Taxa de Ocupação das Salas Administrativas: %.2f%%\n", calcularTaxaOcupacao(salasAdm, MAX_SALAS_ADM, sizeof(SalaAdministrativa)) * 100);
+    printf("Taxa de Ocupação das Salas dos Professores: %.2f%%\n", calcularTaxaOcupacao(salasProf, MAX_SALAS_PROF, sizeof(SalaProfessor)) * 100);
+    printf("Taxa de Ocupação dos Espaços de Uso Geral: %.2f%%\n", calcularTaxaOcupacao(espacos, MAX_ESPACOS, sizeof(EspacoDeUso)) * 100);
+    printf("Taxa de Ocupação dos Pátios: %.2f%%\n", calcularTaxaOcupacao(patios, MAX_PATIOS, sizeof(Patio)) * 100);
+    printf("Taxa de Ocupação das Salas de Manutenção: %.2f%%\n", calcularTaxaOcupacao(salasMan, MAX_MANUTENCAO, sizeof(Manutencao)) * 100);
+    printf("Taxa de Ocupação dos Espaços Gerais: %.2f%%\n", calcularTaxaOcupacao(gerais, MAX_GERAIS, sizeof(Geral)) * 100);
+
+    int computadoresNecessarios = calcularComputadoresNecessarios(laboratorios, MAX_LABS, sizeof(Laboratorio), 1);
+
+    printf("Computadores necessários para 100%% de ocupação nos Laboratórios: %d\n", computadoresNecessarios);
+
 }
