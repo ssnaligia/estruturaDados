@@ -1,13 +1,13 @@
 #ifndef FUNCOES_H
     #define FUNCOES_H
-    #define MAX_SALAS 13
-    #define MAX_LABS 23
-    #define MAX_SALAS_ADM 13
-    #define MAX_SALAS_PROF 15
-    #define MAX_ESPACOS 2
+    #define MAX_SALAS 14
+    #define MAX_LABS 24
+    #define MAX_SALAS_ADM 14
+    #define MAX_SALAS_PROF 17
+    #define MAX_ESPACOS 4
     #define MAX_PATIOS 2
-    #define MAX_GERAIS 10
-    #define MAX_MANUTENCAO 4
+    #define MAX_GERAIS 12
+    #define MAX_MANUTENCAO 6
 
     typedef struct {
         char bloco[2];
@@ -71,13 +71,15 @@
         int capacidadeMaxima;
     } Geral;
 
-    void cadastrarEspacos(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan);
+    void cadastrarEspacos(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan, const char *tipoEspaco);
+
+    void definirDadosIniciais(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan);
 
     void listarTodosEspacos(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan);
 
     void listarPorBloco(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan);
 
-    void listarPorTipo(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan);
+    void listarPorTipo(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan, const char *tipo);
 
-    void exibirEstatisticas(SalaTeorica *salas, Laboratorio *laboratorios);
+    void exibirEstatisticas( SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan);
 #endif

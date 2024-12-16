@@ -1,16 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 #include "funcoes.h"
-
-#define MAX_SALAS 12
-#define MAX_LABS 22
-#define MAX_SALAS_ADM 12
-#define MAX_SALAS_PROF 14
-#define MAX_ESPACOS 1
-#define MAX_PATIOS 0
-#define MAX_GERAIS 9
-#define MAX_MANUTENCAO 3
 
 int main() {
     SalaTeorica *salas = malloc(MAX_SALAS * sizeof(SalaTeorica));
@@ -30,7 +22,8 @@ int main() {
     definirDadosIniciais(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan);
 
     int opcao;
-    do {
+
+    while (1) {
         printf("\nMenu:\n");
         printf("1. Cadastrar Espaços\n");
         printf("2. Listar Todos Cadastrados\n");
@@ -43,8 +36,58 @@ int main() {
 
         switch (opcao) {
             case 1:
-                cadastrarEspacos(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan);
-                break;
+                {
+                int tipoCadastro;
+                int sairCadastro = 0;  
+                
+                while (!sairCadastro) {
+                    printf("\nSubmenu - Cadastrar Espaços:\n");
+                    printf("1. Sala Teórica\n");
+                    printf("2. Laboratório\n");
+                    printf("3. Sala Administrativa\n");
+                    printf("4. Sala de Professor\n");
+                    printf("5. Espaço Geral\n");
+                    printf("6. Pátio\n");
+                    printf("7. Manutenção\n");
+                    printf("8. Salas Gerais\n");
+                    printf("9. Voltar\n");
+                    printf("Escolha uma opção: ");
+                    scanf("%d", &tipoCadastro);
+
+                    switch (tipoCadastro) {
+                        case 1:
+                            cadastrarEspacos(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "SalaTeorica");
+                            break;
+                        case 2:
+                            cadastrarEspacos(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "Laboratorio");
+                            break;
+                        case 3:
+                            cadastrarEspacos(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "SalaProfessor");
+                            break;
+                        case 4:
+                            cadastrarEspacos(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "SalaAdministrativa");
+                            break;
+                        case 5:
+                            cadastrarEspacos(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "EspacoGeral");
+                            break;
+                        case 6:
+                            cadastrarEspacos(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "Patio");
+                            break;
+                        case 7:
+                            cadastrarEspacos(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "Manutencao");
+                            break;
+                        case 8:
+                            cadastrarEspacos(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "SalaGeral");
+                            break;
+                        case 9:
+                            sairCadastro = 1; 
+                            break;
+                        default:
+                            printf("Opção inválida.\n");
+                    }
+                }
+            }
+            break;
             case 2:
                 listarTodosEspacos(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan);
                 break;
@@ -52,10 +95,59 @@ int main() {
                 listarPorBloco(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan);
                 break;
             case 4:
-                listarPorTipo(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan);
+                    {
+                    int tipoOpcao;
+                    int sairSubmenu = 0;
+                    while (!sairSubmenu) {
+                        printf("\nSubmenu - Listar por Tipo:\n");
+                        printf("1. Salas Teóricas\n");
+                        printf("2. Laboratórios\n");
+                        printf("3. Salas de Professores\n");
+                        printf("4. Salas Administrativas\n");
+                        printf("5. Espaços Gerais\n");
+                        printf("6. Pátios\n");
+                        printf("7. Manutenção\n");
+                        printf("8. Salas Gerais\n");
+                        printf("9. Voltar\n");
+                        printf("Escolha uma opção: ");
+                        scanf("%d", &tipoOpcao);
+
+                        switch (tipoOpcao) {
+                            case 1:
+                                listarPorTipo(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "SalaTeorica");
+                                break;
+                            case 2:
+                                listarPorTipo(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "Laboratorio");
+                                break;
+                            case 3:
+                                listarPorTipo(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "SalaProfessor");
+                                break;
+                            case 4:
+                                listarPorTipo(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "SalaAdministrativa");
+                                break;
+                            case 5:
+                                listarPorTipo(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "EspacoGeral");
+                                break;
+                            case 6:
+                                listarPorTipo(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "Patio");
+                                break;
+                            case 7:
+                                listarPorTipo(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "Manutencao");
+                                break;
+                            case 8:
+                                listarPorTipo(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan, "SalaGeral");
+                                break;
+                            case 9:
+                                sairSubmenu = 1;  
+                                break;
+                            default:
+                                printf("Opção inválida.\n");
+                        }
+                    }
+                }
                 break;
             case 5:
-                exibirEstatisticas(salas, laboratorios);
+                exibirEstatisticas(salas, laboratorios, salasAdm, salasProf, espacos, patios, gerais, salasMan);
                 break;
             case 6:
                 printf("\nEncerrando o programa.\n");
