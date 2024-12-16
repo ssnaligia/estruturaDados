@@ -1,5 +1,13 @@
 #ifndef FUNCOES_H
     #define FUNCOES_H
+    #define MAX_SALAS 13
+    #define MAX_LABS 23
+    #define MAX_SALAS_ADM 13
+    #define MAX_SALAS_PROF 15
+    #define MAX_ESPACOS 2
+    #define MAX_PATIOS 2
+    #define MAX_GERAIS 10
+    #define MAX_MANUTENCAO 4
 
     typedef struct {
         char bloco[2];
@@ -53,14 +61,6 @@
         char identificacao[4];
         int capacidadeAtual;
         int capacidadeMaxima;
-    } Auditorio;
-
-    typedef struct {
-        char bloco[2];
-        char descricao[50];
-        char identificacao[4];
-        int capacidadeAtual;
-        int capacidadeMaxima;
     } Manutencao;
 
     typedef struct {
@@ -71,8 +71,13 @@
         int capacidadeMaxima;
     } Geral;
 
-    double calcularTaxaOcupacao(SalaTeorica *salas, int quantidadeSalas);
-    int calcularComputadoresNecessarios(Laboratorio *labs, int quantidadeLabs);
-    void exibirEspacosOrdenados(SalaTeorica *salas, int quantidadeSalas, Laboratorio *labs, int quantidadeLabs);
-    void definirDadosIniciais(SalaTeorica *salas, Laboratorio *labs, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan);
+    void cadastrarEspacos(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan);
+
+    void listarTodosEspacos(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan);
+
+    void listarPorBloco(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan);
+
+    void listarPorTipo(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan);
+
+    void exibirEstatisticas(SalaTeorica *salas, Laboratorio *laboratorios);
 #endif

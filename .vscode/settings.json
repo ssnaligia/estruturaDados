@@ -12,6 +12,7 @@
         "stdlib.h": "c",
         "funcionario.h": "c",
         "ordenado.h": "c",
-        "conjunto.h": "c"
+        "conjunto.h": "c",
+        "funcoes.h": "c"
     }
 }

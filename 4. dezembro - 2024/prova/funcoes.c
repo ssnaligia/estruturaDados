@@ -11,54 +11,93 @@ double calcularTaxaOcupacao(SalaTeorica *salas, int quantidadeSalas) {
     return (double)somaAtual / somaMaxima;
 }
 
-int calcularComputadoresNecessarios(Laboratorio *labs, int quantidadeLabs) {
+int calcularComputadoresNecessarios(Laboratorio *laboratorios, int quantidadelaboratorios) {
     int totalNecessario = 0;
-    for (int i = 0; i < quantidadeLabs; i++) {
-        if (labs[i].capacidadeAtual < labs[i].capacidadeMaxima) {
-            totalNecessario += labs[i].capacidadeMaxima - labs[i].capacidadeAtual;
+    for (int i = 0; i < quantidadelaboratorios; i++) {
+        if (laboratorios[i].capacidadeAtual < laboratorios[i].capacidadeMaxima) {
+            totalNecessario += laboratorios[i].capacidadeMaxima - laboratorios[i].capacidadeAtual;
         }
     }
     return totalNecessario;
 }
 
-void exibirEspacosOrdenados(SalaTeorica *salas, int quantidadeSalas, Laboratorio *labs, int quantidadeLabs) {
-    int total = quantidadeSalas + quantidadeLabs;
-    int capacidades[total];
-    char descricoes[total][50];
+void cadastrarEspacos(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan) {
+    char tipo[20];
+    printf("\nDigite o tipo de espaço a cadastrar (SalaTeorica, Laboratorio, SalaAdministrativa, etc.): ");
+    scanf("%s", tipo);
 
-    for (int i = 0; i < quantidadeSalas; i++) {
-        capacidades[i] = salas[i].capacidadeMaxima;
-        sprintf(descricoes[i], "Sala Teórica %s%s", salas[i].bloco, salas[i].identificacao);
-    }
-
-    for (int i = 0; i < quantidadeLabs; i++) {
-        capacidades[quantidadeSalas + i] = labs[i].capacidadeMaxima;
-        sprintf(descricoes[quantidadeSalas + i], "Laboratório %s%s", labs[i].bloco, labs[i].identificacao);
-    }
-
-    for (int i = 0; i < total - 1; i++) {
-        for (int j = i + 1; j < total; j++) {
-            if (capacidades[i] < capacidades[j]) {
-                int temp = capacidades[i];
-                capacidades[i] = capacidades[j];
-                capacidades[j] = temp;
-
-                char tempDesc[50];
-                strcpy(tempDesc, descricoes[i]);
-                strcpy(descricoes[i], descricoes[j]);
-                strcpy(descricoes[j], tempDesc);
-            }
+    if (strcmp(tipo, "SalaTeorica") == 0) {
+        static int indexSala = 10; 
+        if (indexSala <= MAX_SALAS) {
+            printf("Bloco: ");
+            scanf("%s", salas[indexSala].bloco);
+            printf("Identificação: ");
+            scanf("%s", salas[indexSala].identificacao);
+            printf("Capacidade Atual: ");
+            scanf("%d", &salas[indexSala].capacidadeAtual);
+            printf("Capacidade Máxima: ");
+            scanf("%d", &salas[indexSala].capacidadeMaxima);
+            indexSala++;
+        } else {
+            printf("Erro: Limite de salas teóricas atingido! Não é possível cadastrar mais salas.\n");
         }
-    }
-
-    printf("\n");
-    for (int i = 0; i < total; i++) {
-        printf("%s - Capacidade Máxima: %d\n", descricoes[i], capacidades[i]);
+    } 
+    else if (strcmp(tipo, "Laboratorio") == 0) {
+        static int indexLab = 18; 
+        if (indexLab <= MAX_LABS) {
+            printf("Bloco: ");
+            scanf("%s", laboratorios[indexLab].bloco);
+            printf("Descrição: ");
+            scanf(" %[^\n]", laboratorios[indexLab].descricao); 
+            printf("Identificação: ");
+            scanf("%s", laboratorios[indexLab].identificacao);
+            printf("Capacidade Atual: ");
+            scanf("%d", &laboratorios[indexLab].capacidadeAtual);
+            printf("Capacidade Máxima: ");
+            scanf("%d", &laboratorios[indexLab].capacidadeMaxima);
+            indexLab++;
+        } else {
+            printf("Erro: Limite de laboratórios atingido! Não é possível cadastrar mais laboratórios.\n");
+        }
+    } 
+    else if (strcmp(tipo, "SalaAdministrativa") == 0) {
+        static int indexAdm = 10; 
+        if (indexAdm <= MAX_SALAS_ADM) {
+            printf("Bloco: ");
+            scanf("%s", salasAdm[indexAdm].bloco);
+            printf("Descrição: ");
+            scanf(" %[^\n]", salasAdm[indexAdm].descricao); 
+            printf("Identificação: ");
+            scanf("%s", salasAdm[indexAdm].identificacao);
+            printf("Capacidade Atual: ");
+            scanf("%d", &salasAdm[indexAdm].capacidadeAtual);
+            printf("Capacidade Máxima: ");
+            scanf("%d", &salasAdm[indexAdm].capacidadeMaxima);
+            indexAdm++;
+        } else {
+            printf("Erro: Limite de salas administrativas atingido! Não é possível cadastrar mais salas administrativas.\n");
+        }
+    } 
+    else if (strcmp(tipo, "Patio") == 0) {
+        static int indexPatio = 0; 
+        if (indexPatio == 0) {
+            printf("Identificação do pátio: ");
+            scanf("%s", patios[indexPatio].identificacao);
+            printf("Capacidade Atual do pátio: ");
+            scanf("%d", &patios[indexPatio].capacidadeAtual);
+            printf("Capacidade Máxima do pátio: ");
+            scanf("%d", &patios[indexPatio].capacidadeMaxima);
+            indexPatio++;
+        } else {
+            printf("Erro: Limite de pátios atingido! Não é possível cadastrar mais pátios.\n");
+        }
+    } 
+    else {
+        printf("Erro: Tipo de espaço desconhecido. Tente novamente.\n");
     }
 }
 
-void definirDadosIniciais(SalaTeorica *salas, Laboratorio *labs, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan) {
-
+void definirDadosIniciais(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan) {
     //BLOCO A
     strcpy(gerais[0].bloco, "A");
     strcpy(gerais[0].descricao, "Coordenadoria de Registros Acadêmicos");
@@ -95,7 +134,6 @@ void definirDadosIniciais(SalaTeorica *salas, Laboratorio *labs, SalaAdministrat
     strcpy(espacos[0].identificacao, "A101");
     espacos[0].capacidadeAtual = 27;
     espacos[0].capacidadeMaxima = 40;
-
 
     //BLOCO B
     strcpy(gerais[5].bloco, "B");
@@ -165,11 +203,11 @@ void definirDadosIniciais(SalaTeorica *salas, Laboratorio *labs, SalaAdministrat
     salasAdm[5].capacidadeAtual = 27;
     salasAdm[5].capacidadeMaxima = 40;
 
-    strcpy(salasAdm[6].bloco, "C");
+    /*strcpy(salasAdm[6].bloco, "C");
     strcpy(salasAdm[6].descricao, "Coord. Sociopedagógica");
     strcpy(salasAdm[6].identificacao, "C103");
     salasAdm[6].capacidadeAtual = 27;
-    salasAdm[6].capacidadeMaxima = 40;
+    salasAdm[6].capacidadeMaxima = 40;*/
 
     strcpy(salasAdm[7].bloco, "C");
     strcpy(salasAdm[7].descricao, "Coord. de Apoio à Direção");
@@ -184,8 +222,7 @@ void definirDadosIniciais(SalaTeorica *salas, Laboratorio *labs, SalaAdministrat
     salasAdm[8].capacidadeMaxima = 40;
 
     //BLOCO D
-
-    strcpy(salas[0].bloco, "D");
+    /*strcpy(salas[0].bloco, "D");
     strcpy(salas[0].identificacao, "D106");
     salas[0].capacidadeAtual = 27;
     salas[0].capacidadeMaxima = 40;
@@ -193,7 +230,7 @@ void definirDadosIniciais(SalaTeorica *salas, Laboratorio *labs, SalaAdministrat
     strcpy(salas[1].bloco, "D");
     strcpy(salas[1].identificacao, "D105");
     salas[1].capacidadeAtual = 27;
-    salas[1].capacidadeMaxima = 40;
+    salas[1].capacidadeMaxima = 40;*/
 
     strcpy(salas[2].bloco, "D");
     strcpy(salas[2].identificacao, "D104");
@@ -216,17 +253,16 @@ void definirDadosIniciais(SalaTeorica *salas, Laboratorio *labs, SalaAdministrat
     salas[5].capacidadeMaxima = 40;
 
     //BLOCO E
-
-    strcpy(labs[0].bloco, "E");
-    strcpy(labs[0].descricao, "Lab. de Ensino de Matemática");
-    strcpy(labs[0].identificacao, "E105");
-    labs[0].capacidadeAtual = 35;
-    labs[0].capacidadeMaxima = 40;
+    /*strcpy(laboratorios[0].bloco, "E");
+    strcpy(laboratorios[0].descricao, "Lab. de Ensino de Matemática");
+    strcpy(laboratorios[0].identificacao, "E105");
+    laboratorios[0].capacidadeAtual = 35;
+    laboratorios[0].capacidadeMaxima = 40;
 
     strcpy(salas[6].bloco, "E");
     strcpy(salas[6].identificacao, "E104");
     salas[6].capacidadeAtual = 27;
-    salas[6].capacidadeMaxima = 40;
+    salas[6].capacidadeMaxima = 40;*/
 
     strcpy(salas[7].bloco, "E");
     strcpy(salas[7].identificacao, "E103");
@@ -244,12 +280,11 @@ void definirDadosIniciais(SalaTeorica *salas, Laboratorio *labs, SalaAdministrat
     salas[9].capacidadeMaxima = 40;
 
     //BLOCO F
-
-    strcpy(labs[1].bloco, "F");
-    strcpy(labs[1].descricao, "Estúdio Audiovisual");
-    strcpy(labs[1].identificacao, "F104");
-    labs[1].capacidadeAtual = 35;
-    labs[1].capacidadeMaxima = 40;
+    /*strcpy(laboratorios[1].bloco, "F");
+    strcpy(laboratorios[1].descricao, "Estúdio Audiovisual");
+    strcpy(laboratorios[1].identificacao, "F104");
+    laboratorios[1].capacidadeAtual = 35;
+    laboratorios[1].capacidadeMaxima = 40;*/
 
     strcpy(salas[10].bloco, "F");
     strcpy(salas[10].identificacao, "F103");
@@ -267,18 +302,17 @@ void definirDadosIniciais(SalaTeorica *salas, Laboratorio *labs, SalaAdministrat
     salas[12].capacidadeMaxima = 40;
 
     //BLOCO G
-
     strcpy(patios[0].bloco, "G");
     strcpy(patios[0].descricao, "Pátio");
     strcpy(patios[0].identificacao, "Pátio");
     patios[0].capacidadeAtual = 35;
     patios[0].capacidadeMaxima = 40;
 
-    strcpy(salasAdm[9].bloco, "G");
+    /*strcpy(salasAdm[9].bloco, "G");
     strcpy(salasAdm[9].descricao, "Coord. de Apoio ao Ensino");
     strcpy(salasAdm[9].identificacao, "G102");
     salasAdm[9].capacidadeAtual = 35;
-    salasAdm[9].capacidadeMaxima = 40;
+    salasAdm[9].capacidadeMaxima = 40;*/
 
     strcpy(salasAdm[10].bloco, "G");
     strcpy(salasAdm[10].descricao, "Coord. de Apoio ao Ensino");
@@ -286,11 +320,11 @@ void definirDadosIniciais(SalaTeorica *salas, Laboratorio *labs, SalaAdministrat
     salasAdm[10].capacidadeAtual = 35;
     salasAdm[10].capacidadeMaxima = 40;
 
-    strcpy(labs[2].bloco, "G");
-    strcpy(labs[2].descricao, "Lab. Iniciação Científica");
-    strcpy(labs[2].identificacao, "G107");
-    labs[2].capacidadeAtual = 35;
-    labs[2].capacidadeMaxima = 40;
+    strcpy(laboratorios[2].bloco, "G");
+    strcpy(laboratorios[2].descricao, "Lab. Iniciação Científica");
+    strcpy(laboratorios[2].identificacao, "G107");
+    laboratorios[2].capacidadeAtual = 35;
+    laboratorios[2].capacidadeMaxima = 40;
 
     strcpy(gerais[9].bloco, "G");
     strcpy(gerais[9].descricao, "Cantina");
@@ -299,7 +333,6 @@ void definirDadosIniciais(SalaTeorica *salas, Laboratorio *labs, SalaAdministrat
     gerais[9].capacidadeMaxima = 40;
 
     //BLOCO H
-    
     strcpy(salasMan[0].bloco, "H");
     strcpy(salasMan[0].descricao, "Veículos Oficiais");
     strcpy(salasMan[0].identificacao, "H104");
@@ -325,143 +358,140 @@ void definirDadosIniciais(SalaTeorica *salas, Laboratorio *labs, SalaAdministrat
     salasMan[3].capacidadeMaxima = 40;
 
     //BLOCO I
-
     strcpy(salasAdm[11].bloco, "I");
     strcpy(salasAdm[11].descricao, "CPD - Centro de Processamento de Dados");
     strcpy(salasAdm[11].identificacao, "I113");
     salasAdm[11].capacidadeAtual = 35;
     salasAdm[11].capacidadeMaxima = 40;
 
-    strcpy(labs[3].bloco, "I");
-    strcpy(labs[3].descricao, "LDA - Lab. de Desenvolvimento Avançado");
-    strcpy(labs[3].identificacao, "I112");
-    labs[3].capacidadeAtual = 35;
-    labs[3].capacidadeMaxima = 40;
+    strcpy(laboratorios[3].bloco, "I");
+    strcpy(laboratorios[3].descricao, "LDA - Lab. de Desenvolvimento Avançado");
+    strcpy(laboratorios[3].identificacao, "I112");
+    laboratorios[3].capacidadeAtual = 35;
+    laboratorios[3].capacidadeMaxima = 40;
 
-    strcpy(labs[4].bloco, "I");
-    strcpy(labs[4].descricao, "LDA - Lab. de Desenvolvimento Avançado");
-    strcpy(labs[4].identificacao, "I111");
-    labs[4].capacidadeAtual = 35;
-    labs[4].capacidadeMaxima = 40;
+    /*strcpy(laboratorios[4].bloco, "I");
+    strcpy(laboratorios[4].descricao, "LDA - Lab. de Desenvolvimento Avançado");
+    strcpy(laboratorios[4].identificacao, "I111");
+    laboratorios[4].capacidadeAtual = 35;
+    laboratorios[4].capacidadeMaxima = 40;*/
 
-    strcpy(labs[5].bloco, "I");
-    strcpy(labs[5].descricao, "Lab. de Química e Biologia");
-    strcpy(labs[5].identificacao, "I109");
-    labs[5].capacidadeAtual = 35;
-    labs[5].capacidadeMaxima = 40;
+    strcpy(laboratorios[5].bloco, "I");
+    strcpy(laboratorios[5].descricao, "Lab. de Química e Biologia");
+    strcpy(laboratorios[5].identificacao, "I109");
+    laboratorios[5].capacidadeAtual = 35;
+    laboratorios[5].capacidadeMaxima = 40;
 
-    strcpy(labs[6].bloco, "I");
-    strcpy(labs[6].descricao, "Lab. de Física");
-    strcpy(labs[6].identificacao, "I108");
-    labs[6].capacidadeAtual = 35;
-    labs[6].capacidadeMaxima = 40;
+    strcpy(laboratorios[6].bloco, "I");
+    strcpy(laboratorios[6].descricao, "Lab. de Física");
+    strcpy(laboratorios[6].identificacao, "I108");
+    laboratorios[6].capacidadeAtual = 35;
+    laboratorios[6].capacidadeMaxima = 40;
 
-    strcpy(salasAdm[12].bloco, "I");
+    /*strcpy(salasAdm[12].bloco, "I");
     strcpy(salasAdm[12].descricao, "CTI - Coordenadoria de Tecnologia da Informação");
     strcpy(salasAdm[12].identificacao, "I107");
     salasAdm[12].capacidadeAtual = 35;
-    salasAdm[12].capacidadeMaxima = 40;
+    salasAdm[12].capacidadeMaxima = 40;*/
 
-    strcpy(labs[7].bloco, "I");
-    strcpy(labs[7].descricao, "Lab. de Redes");
-    strcpy(labs[7].identificacao, "I106");
-    labs[7].capacidadeAtual = 35;
-    labs[7].capacidadeMaxima = 40;
+    strcpy(laboratorios[7].bloco, "I");
+    strcpy(laboratorios[7].descricao, "Lab. de Redes");
+    strcpy(laboratorios[7].identificacao, "I106");
+    laboratorios[7].capacidadeAtual = 35;
+    laboratorios[7].capacidadeMaxima = 40;
 
-    strcpy(labs[8].bloco, "I");
-    strcpy(labs[8].descricao, "Lab. de Hardware");
-    strcpy(labs[8].identificacao, "I105");
-    labs[8].capacidadeAtual = 35;
-    labs[8].capacidadeMaxima = 40;
+    strcpy(laboratorios[8].bloco, "I");
+    strcpy(laboratorios[8].descricao, "Lab. de Hardware");
+    strcpy(laboratorios[8].identificacao, "I105");
+    laboratorios[8].capacidadeAtual = 35;
+    laboratorios[8].capacidadeMaxima = 40;
 
-    strcpy(labs[9].bloco, "I");
-    strcpy(labs[9].descricao, "Lab. de Informática");
-    strcpy(labs[9].identificacao, "I104");
-    labs[9].capacidadeAtual = 35;
-    labs[9].capacidadeMaxima = 40;
+    strcpy(laboratorios[9].bloco, "I");
+    strcpy(laboratorios[9].descricao, "Lab. de Informática");
+    strcpy(laboratorios[9].identificacao, "I104");
+    laboratorios[9].capacidadeAtual = 35;
+    laboratorios[9].capacidadeMaxima = 40;
 
-    strcpy(labs[10].bloco, "I");
-    strcpy(labs[10].descricao, "Lab. de Informática");
-    strcpy(labs[10].identificacao, "I103");
-    labs[10].capacidadeAtual = 35;
-    labs[10].capacidadeMaxima = 40;
+    strcpy(laboratorios[10].bloco, "I");
+    strcpy(laboratorios[10].descricao, "Lab. de Informática");
+    strcpy(laboratorios[10].identificacao, "I103");
+    laboratorios[10].capacidadeAtual = 35;
+    laboratorios[10].capacidadeMaxima = 40;
 
-    strcpy(labs[11].bloco, "I");
-    strcpy(labs[11].descricao, "Lab. de Informática");
-    strcpy(labs[11].identificacao, "I102");
-    labs[11].capacidadeAtual = 35;
-    labs[11].capacidadeMaxima = 40;
+    strcpy(laboratorios[11].bloco, "I");
+    strcpy(laboratorios[11].descricao, "Lab. de Informática");
+    strcpy(laboratorios[11].identificacao, "I102");
+    laboratorios[11].capacidadeAtual = 35;
+    laboratorios[11].capacidadeMaxima = 40;
 
-    strcpy(labs[12].bloco, "I");
-    strcpy(labs[12].descricao, "Lab. de Informática");
-    strcpy(labs[12].identificacao, "I101");
-    labs[12].capacidadeAtual = 35;
-    labs[12].capacidadeMaxima = 40;
+    /*strcpy(laboratorios[12].bloco, "I");
+    strcpy(laboratorios[12].descricao, "Lab. de Informática");
+    strcpy(laboratorios[12].identificacao, "I101");
+    laboratorios[12].capacidadeAtual = 35;
+    laboratorios[12].capacidadeMaxima = 40;*/
 
     //BLOCO J
+    strcpy(laboratorios[13].bloco, "J");
+    strcpy(laboratorios[13].descricao, "Sala de Iniciação Científica");
+    strcpy(laboratorios[13].identificacao, "J112");
+    laboratorios[13].capacidadeAtual = 35;
+    laboratorios[13].capacidadeMaxima = 40;
 
-    strcpy(labs[13].bloco, "J");
-    strcpy(labs[13].descricao, "Sala de Iniciação Científica");
-    strcpy(labs[13].identificacao, "J112");
-    labs[13].capacidadeAtual = 35;
-    labs[13].capacidadeMaxima = 40;
+    strcpy(laboratorios[14].bloco, "J");
+    strcpy(laboratorios[14].descricao, "Lab. de Eletrônica e Física Experimental");
+    strcpy(laboratorios[14].identificacao, "J110");
+    laboratorios[14].capacidadeAtual = 35;
+    laboratorios[14].capacidadeMaxima = 40;
 
-    strcpy(labs[14].bloco, "J");
-    strcpy(labs[14].descricao, "Lab. de Eletrônica e Física Experimental");
-    strcpy(labs[14].identificacao, "J110");
-    labs[14].capacidadeAtual = 35;
-    labs[14].capacidadeMaxima = 40;
+    strcpy(laboratorios[15].bloco, "J");
+    strcpy(laboratorios[15].descricao, "Lab. de Informática da Indústria");
+    strcpy(laboratorios[15].identificacao, "J109");
+    laboratorios[15].capacidadeAtual = 35;
+    laboratorios[15].capacidadeMaxima = 40;
 
-    strcpy(labs[15].bloco, "J");
-    strcpy(labs[15].descricao, "Lab. de Informática da Indústria");
-    strcpy(labs[15].identificacao, "J109");
-    labs[15].capacidadeAtual = 35;
-    labs[15].capacidadeMaxima = 40;
+    strcpy(laboratorios[16].bloco, "J");
+    strcpy(laboratorios[16].descricao, "Lab. de Hidráulica e Pneumática");
+    strcpy(laboratorios[16].identificacao, "J108");
+    laboratorios[16].capacidadeAtual = 35;
+    laboratorios[16].capacidadeMaxima = 40;
 
-    strcpy(labs[16].bloco, "J");
-    strcpy(labs[16].descricao, "Lab. de Hidráulica e Pneumática");
-    strcpy(labs[16].identificacao, "J108");
-    labs[16].capacidadeAtual = 35;
-    labs[16].capacidadeMaxima = 40;
+    /*strcpy(laboratorios[17].bloco, "J");
+    strcpy(laboratorios[17].descricao, "Lab. de CNC e Metrologia");
+    strcpy(laboratorios[17].identificacao, "J107");
+    laboratorios[17].capacidadeAtual = 35;
+    laboratorios[17].capacidadeMaxima = 40;*/
 
-    strcpy(labs[17].bloco, "J");
-    strcpy(labs[17].descricao, "Lab. de CNC e Metrologia");
-    strcpy(labs[17].identificacao, "J107");
-    labs[17].capacidadeAtual = 35;
-    labs[17].capacidadeMaxima = 40;
+    strcpy(laboratorios[18].bloco, "J");
+    strcpy(laboratorios[18].descricao, "Lab. de Fabricação Mecânica");
+    strcpy(laboratorios[18].identificacao, "J106");
+    laboratorios[18].capacidadeAtual = 35;
+    laboratorios[18].capacidadeMaxima = 40;
 
-    strcpy(labs[18].bloco, "J");
-    strcpy(labs[18].descricao, "Lab. de Fabricação Mecânica");
-    strcpy(labs[18].identificacao, "J106");
-    labs[18].capacidadeAtual = 35;
-    labs[18].capacidadeMaxima = 40;
+    strcpy(laboratorios[19].bloco, "J");
+    strcpy(laboratorios[19].descricao, "Lab. de Fabricação Mecânica");
+    strcpy(laboratorios[19].identificacao, "J105");
+    laboratorios[19].capacidadeAtual = 35;
+    laboratorios[19].capacidadeMaxima = 40;
 
-    strcpy(labs[19].bloco, "J");
-    strcpy(labs[19].descricao, "Lab. de Fabricação Mecânica");
-    strcpy(labs[19].identificacao, "J105");
-    labs[19].capacidadeAtual = 35;
-    labs[19].capacidadeMaxima = 40;
+    strcpy(laboratorios[20].bloco, "J");
+    strcpy(laboratorios[20].descricao, "Lab. de Materiais");
+    strcpy(laboratorios[20].identificacao, "J103");
+    laboratorios[20].capacidadeAtual = 35;
+    laboratorios[20].capacidadeMaxima = 40;
 
-    strcpy(labs[20].bloco, "J");
-    strcpy(labs[20].descricao, "Lab. de Materiais");
-    strcpy(labs[20].identificacao, "J103");
-    labs[20].capacidadeAtual = 35;
-    labs[20].capacidadeMaxima = 40;
+    strcpy(laboratorios[21].bloco, "J");
+    strcpy(laboratorios[21].descricao, "Lab. de Eletrônica");
+    strcpy(laboratorios[21].identificacao, "J102");
+    laboratorios[21].capacidadeAtual = 35;
+    laboratorios[21].capacidadeMaxima = 40;
 
-    strcpy(labs[21].bloco, "J");
-    strcpy(labs[21].descricao, "Lab. de Eletrônica");
-    strcpy(labs[21].identificacao, "J102");
-    labs[21].capacidadeAtual = 35;
-    labs[21].capacidadeMaxima = 40;
-
-    strcpy(labs[22].bloco, "J");
-    strcpy(labs[22].descricao, "Lab. de Robótica e CLP/Labmaker");
-    strcpy(labs[22].identificacao, "J101");
-    labs[22].capacidadeAtual = 35;
-    labs[22].capacidadeMaxima = 40;
+    strcpy(laboratorios[22].bloco, "J");
+    strcpy(laboratorios[22].descricao, "Lab. de Robótica e CLP/Labmaker");
+    strcpy(laboratorios[22].identificacao, "J101");
+    laboratorios[22].capacidadeAtual = 35;
+    laboratorios[22].capacidadeMaxima = 40;
 
     //BLOCO J PISO PROFESSORES
-
     strcpy(salasProf[0].bloco, "J");
     strcpy(salasProf[0].identificacao, "J215");
     salasProf[0].capacidadeAtual = 35;
@@ -536,5 +566,106 @@ void definirDadosIniciais(SalaTeorica *salas, Laboratorio *labs, SalaAdministrat
     strcpy(salasProf[14].identificacao, "J201");
     salasProf[14].capacidadeAtual = 35;
     salasProf[14].capacidadeMaxima = 40;
+}
+
+void listarTodosEspacos(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan) {
+    printf("\nSalas Teóricas:\n");
+    for (int i = 0; i < MAX_SALAS; i++) {
+        printf("Bloco: %s, Identificação: %s, Capacidade Atual: %d, Capacidade Máxima: %d\n",
+               salas[i].bloco, salas[i].identificacao, salas[i].capacidadeAtual, salas[i].capacidadeMaxima);
+    }
+
+    printf("\nLaboratórios:\n");
+    for (int i = 0; i < MAX_LABS; i++) {
+        printf("Bloco: %s, Descrição: %s, Identificação: %s, Capacidade Atual: %d, Capacidade Máxima: %d\n",
+               laboratorios[i].bloco, laboratorios[i].descricao, laboratorios[i].identificacao, laboratorios[i].capacidadeAtual, laboratorios[i].capacidadeMaxima);
+    }
+
+    printf("\nSalas Administrativas:\n");
+    for (int i = 0; i < MAX_SALAS_ADM; i++) {
+        printf("Bloco: %s, Descrição: %s, Identificação: %s, Capacidade Atual: %d, Capacidade Máxima: %d\n",
+               salasAdm[i].bloco, salasAdm[i].descricao, salasAdm[i].identificacao, salasAdm[i].capacidadeAtual, salasAdm[i].capacidadeMaxima);
+    }
+
+    printf("\nSalas dos Professores:\n");
+    for (int i = 0; i < MAX_SALAS_PROF; i++) {
+        printf("Bloco: %s, Identificação: %s, Capacidade Atual: %d, Capacidade Máxima: %d\n",
+               salasProf[i].bloco, salasProf[i].identificacao, salasProf[i].capacidadeAtual, salasProf[i].capacidadeMaxima);
+    }
+
+    printf("\nEspaços de Uso Geral:\n");
+    for (int i = 0; i < MAX_SALAS_ADM; i++) {
+        printf("Bloco: %s, Descrição: %s, Identificação: %s, Capacidade Atual: %d, Capacidade Máxima: %d\n",
+               espacos[i].bloco, espacos[i].descricao, espacos[i].identificacao, espacos[i].capacidadeAtual, espacos[i].capacidadeMaxima);
+    }
+
+    printf("\nPátio:\n");
+    for (int i = 0; i < MAX_PATIOS; i++) {
+        printf("Bloco: %s, Descrição: %s, Identificação: %s, Capacidade Atual: %d, Capacidade Máxima: %d\n",
+               patios[i].bloco, patios[i].descricao, patios[i].identificacao, patios[i].capacidadeAtual, patios[i].capacidadeMaxima);
+    }
+
+    printf("\nManutenção:\n");
+    for (int i = 0; i < MAX_MANUTENCAO; i++) {
+        printf("Bloco: %s, Descrição: %s, Identificação: %s, Capacidade Atual: %d, Capacidade Máxima: %d\n",
+               salasMan[i].bloco, salasMan[i].descricao, salasMan[i].identificacao, salasMan[i].capacidadeAtual, salasMan[i].capacidadeMaxima);
+    }
+
+    printf("\nGerais:\n");
+    for (int i = 0; i < MAX_GERAIS; i++) {
+        printf("Bloco: %s, Descrição: %s, Identificação: %s, Capacidade Atual: %d, Capacidade Máxima: %d\n",
+               gerais[i].bloco, gerais[i].descricao, gerais[i].identificacao, gerais[i].capacidadeAtual, gerais[i].capacidadeMaxima);
+    }
+}
+
+void listarPorBloco(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan) {
+    char bloco[2];
+    printf("\nDigite o bloco a ser listado: ");
+    scanf("%s", bloco);
+
+    printf("\nEspaços no Bloco %s:\n", bloco);
+
+    for (int i = 0; i < 12; i++) {
+        if (strcmp(salas[i].bloco, bloco) == 0) {
+            printf("Sala Teórica - Identificação: %s, Capacidade Atual: %d, Capacidade Máxima: %d\n",
+                   salas[i].identificacao, salas[i].capacidadeAtual, salas[i].capacidadeMaxima);
+        }
+    }
+
+    for (int i = 0; i < 2; i++) {
+        if (strcmp(laboratorios[i].bloco, bloco) == 0) {
+            printf("Laboratório - Descrição: %s, Identificação: %s, Capacidade Atual: %d, Capacidade Máxima: %d\n",
+                   laboratorios[i].descricao, laboratorios[i].identificacao, laboratorios[i].capacidadeAtual, laboratorios[i].capacidadeMaxima);
+        }
+    }
+}
+
+void listarPorTipo(SalaTeorica *salas, Laboratorio *laboratorios, SalaAdministrativa *salasAdm, SalaProfessor *salasProf, EspacoDeUso *espacos, Patio *patios, Geral *gerais, Manutencao *salasMan) {
+    char tipo[20];
+    printf("\nDigite o tipo de espaço a ser listado (SalaTeorica, Laboratorio, etc.): ");
+    scanf("%s", tipo);
+
+    if (strcmp(tipo, "SalaTeorica") == 0) {
+        printf("\nSalas Teóricas:\n");
+        for (int i = 0; i < 12; i++) {
+            printf("Bloco: %s, Identificação: %s, Capacidade Atual: %d, Capacidade Máxima: %d\n",
+                   salas[i].bloco, salas[i].identificacao, salas[i].capacidadeAtual, salas[i].capacidadeMaxima);
+        }
+    } else if (strcmp(tipo, "Laboratorio") == 0) {
+        printf("\nLaboratórios:\n");
+        for (int i = 0; i < 2; i++) {
+            printf("Bloco: %s, Descrição: %s, Identificação: %s, Capacidade Atual: %d, Capacidade Máxima: %d\n",
+                   laboratorios[i].bloco, laboratorios[i].descricao, laboratorios[i].identificacao, laboratorios[i].capacidadeAtual, laboratorios[i].capacidadeMaxima);
+        }
+    }
+}
+
+void exibirEstatisticas(SalaTeorica *salas, Laboratorio *laboratorios) {
+    double taxaOcupacao = calcularTaxaOcupacao(salas, 12);
+    int computadoresNecessarios = calcularComputadoresNecessarios(laboratorios, 2);
+
+    printf("\nEstatísticas:\n");
+    printf("Taxa de Ocupação das Salas Teóricas: %.2f%%\n", taxaOcupacao * 100);
+    printf("Computadores necessários para 100%% de ocupação: %d\n", computadoresNecessarios);
 }
 
