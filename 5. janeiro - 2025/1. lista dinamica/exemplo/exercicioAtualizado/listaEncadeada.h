@@ -22,11 +22,16 @@ typedef struct tipoNo *Lista; //defino tipo
 Lista* criaLista();
 int tamLista(Lista* inicio);
 int listaVazia(Lista* inicio);
+int insereInicio(Lista* inicio, elemento aluno);
 int insereFinal(Lista* inicio, elemento aluno);
+int insereOrdenado(Lista* inicio, elemento aluno);
 
 void imprimeLista(Lista* inicio);
+int quantidadeElemento(Lista* inicio);
 
 int removeInicio(Lista* inicio);
+int removeFinal(Lista* inicio);
+int removeMatricula(Lista* inicio, elemento aluno);
 void apagaLista(Lista* inicio);
 
 int consultaMatricula(Lista* inicio, int mat, elemento *aluno);

@@ -62,7 +62,7 @@ int insereFinal(Lista* inicio, elemento aluno){
         return 0;
     no->dado = aluno;
     no->prox = NULL;
-    if((*inicio) == NULL){//lista vazia: insere inicio
+    if((*inicio) == NULL){ //lista vazia: insere inicio
         *inicio = no;
     }else{
         noLista *aux;
@@ -72,6 +72,35 @@ int insereFinal(Lista* inicio, elemento aluno){
         }
         aux->prox = no;
     }
+    return 1;
+}
+
+int insereOrdenado(Lista* inicio, elemento aluno){
+     if (inicio == NULL)  
+        return 0;
+
+    noLista *novoNo = (noLista*) malloc(sizeof(noLista));
+    if (novoNo == NULL) 
+        return 0;
+
+    novoNo->dado = aluno;  
+    novoNo->prox = NULL;  
+
+    if (*inicio == NULL || (*inicio)->dado.matricula > aluno.matricula) { //caso a lista esteja vazia ou o novo aluno tenha matrícula menor que o primeiro
+        novoNo->prox = *inicio;  //novo nó aponta para o primeiro nó da lista
+        *inicio = novoNo;  //agr o novo nó é o primeiro da lista
+        return 1;
+    }
+
+    noLista *aux = *inicio;
+    while (aux->prox != NULL && aux->prox->dado.matricula < aluno.matricula) { //percorre até o final da lista ou encontra um nó com matrícula maior
+        aux = aux->prox;
+    }
+
+    //insere o novo nó na posição correta
+    novoNo->prox = aux->prox;  //o novo nó vai apontar para o próximo nó
+    aux->prox = novoNo;  //o antigo nó agr aponta para o novo nó
+
     return 1;
 }
 
@@ -141,6 +170,34 @@ int removeFinal(Lista* inicio) {
     return 1;
 }
 
+int removeMatricula(Lista* inicio, elemento aluno) {
+    if (inicio == NULL || *inicio == NULL)  
+        return 0;
+
+    noLista *aux = *inicio;
+
+    if (aux->dado.matricula == aluno.matricula) { //caso o nó a ser removido seja o primeiro
+        *inicio = aux->prox;  
+        free(aux); 
+        return 1;
+    }
+
+    noLista *anterior = NULL;
+    while (aux != NULL && aux->dado.matricula != aluno.matricula) { //percorre a lista para encontrar o nó com a matrícula
+        anterior = aux;
+        aux = aux->prox;
+    }
+
+    if (aux == NULL) {
+        printf("Matrícula não encontrada.\n"); 
+        return 0;
+    }
+
+    anterior->prox = aux->prox;
+    free(aux);  
+    return 1;
+}
+
 void imprimeLista(Lista* inicio){
     if(inicio == NULL)
         return;
@@ -155,6 +212,22 @@ void imprimeLista(Lista* inicio){
         printf("-------------------------------\n");
         no = no->prox;
     }
+}
+
+int quantidadeElemento(Lista* inicio) {
+    int cont = 0;
+    if(inicio == NULL || *inicio == NULL)  
+        printf("\nQuantidade de Elementos na Lista: %d\n", cont);
+        return 0;  
+
+    noLista* no = *inicio;  
+    while(no != NULL){       
+        cont++;              
+        no = no->prox;       
+    }
+
+    printf("\nQuantidade de Elementos na Lista: %d\n", cont);  
+    return cont;  
 }
 
 void apagaLista(Lista* inicio){
