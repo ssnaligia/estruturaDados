@@ -4,6 +4,7 @@ sequencial*/
 
 #include "lista.h"
 #include <stdio.h>
+#include <locale.h>
 
 int main() {
     Lista L1, L2;

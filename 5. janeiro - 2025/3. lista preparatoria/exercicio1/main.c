@@ -3,6 +3,7 @@ ou não (a ordem pode ser crescente ou decrescente).*/
 
 #include "lista.h"
 #include <stdio.h>
+#include <locale.h>
 
 int main() {
     Lista lista;
