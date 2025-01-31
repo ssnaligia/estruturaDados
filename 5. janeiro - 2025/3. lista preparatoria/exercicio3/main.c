@@ -4,7 +4,7 @@ repetidos.*/
 
 #include <stdio.h>
 #include <locale.h>
-#include "lista.h"
+#include "union.h"
 
 int main() {
     Lista L1, L2, L3;

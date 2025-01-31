@@ -1,4 +1,4 @@
-#include "lista.h"
+#include "inteiros.h"
 #include <stdio.h>
 #include <stdlib.h>
 

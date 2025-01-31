@@ -13,6 +13,7 @@
         "funcionario.h": "c",
         "ordenado.h": "c",
         "conjunto.h": "c",
-        "funcoes.h": "c"
+        "funcoes.h": "c",
+        "lista.h": "c"
     }
 }

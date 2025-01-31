@@ -2,7 +2,7 @@
 elementos repetidos. Os dados devem estar ordenados decrescentemente em L2. Use conceito de lista
 sequencial*/
 
-#include "lista.h"
+#include "copia.h"
 #include <stdio.h>
 #include <locale.h>
 

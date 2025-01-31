@@ -1,7 +1,7 @@
 /*1. Fazer uma função para verificar se uma lista de inteiros (use conceito de lista sequencial) está ordenada
 ou não (a ordem pode ser crescente ou decrescente).*/
 
-#include "lista.h"
+#include "inteiros.h"
 #include <stdio.h>
 #include <locale.h>
 

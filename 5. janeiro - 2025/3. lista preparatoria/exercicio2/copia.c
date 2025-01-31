@@ -1,4 +1,4 @@
-#include "lista.h"
+#include "copia.h"
 #include <stdio.h>
 
 void inicializarLista(Lista *lista) {

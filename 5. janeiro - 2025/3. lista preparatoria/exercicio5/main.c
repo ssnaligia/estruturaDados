@@ -1,5 +1,10 @@
+/*Considere uma lista com n valores do tipo struct (campos indicados abaixo), faça um TAD com as
+seguintes operações: Campos para cadastro: codigo do produto; descrição/nome do produto; valor do produto; quantidade em
+estoque; data da última compra do produto para reposição de estoque.*/
+
 #include <stdio.h>
-#include "lista.h"
+#include <locale.h>
+#include "produto.h"
 
 Produto* buscarProdutoPorCodigo(Produto* lista, int codigo);  
 
@@ -40,7 +45,7 @@ int main() {
                 scanf("%d", &quantidade);
                 Produto* produtosComEstoqueBaixo = buscarProdutoEstoqueInferior(lista, quantidade);
                 if (produtosComEstoqueBaixo != NULL) {
-                    printf("\n\nProdutos com estoque inferior a %d:\n", quantidade);
+                    printf("\nProdutos com estoque inferior a %d:\n", quantidade);
                     Produto* temp = produtosComEstoqueBaixo;
                     while (temp != NULL) {
                         imprimirProduto(temp);

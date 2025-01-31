@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include "lista.h"
+#include <locale.h>
+#include "produto.h"
 
 void obterData(Data* data) {
     printf("Digite a data da última compra (dd mm aaaa): ");
@@ -38,6 +39,7 @@ void cadastrarProduto(Produto** lista, int codigo, const char* descricao, float 
     novoProduto->ultima_compra = ultima_compra;
     novoProduto->proximo = *lista; //insere no início da lista
     *lista = novoProduto;
+    printf("\nProduto %d cadastrado com sucesso!\n", codigo);
 }
 
 Produto* buscarProdutoPorCodigo(Produto* lista, int codigo) {

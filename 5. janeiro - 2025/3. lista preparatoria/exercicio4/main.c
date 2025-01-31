@@ -1,3 +1,6 @@
+/*Crie um programa para realizar merge entre duas listas ordenadas. A lista definitiva (merge) deverá
+eliminar elementos repetidos. Você decide se deverá manter as listas originais ou não*/
+
 #include <stdio.h>
 #include "lista.h"
 

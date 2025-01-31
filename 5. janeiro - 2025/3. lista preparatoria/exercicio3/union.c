@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lista.h"
+#include "union.h"
 
 void inicializarLista(Lista* lista) {
     lista->cabeca = NULL;
