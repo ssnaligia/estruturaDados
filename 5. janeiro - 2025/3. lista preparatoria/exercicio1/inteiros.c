@@ -1,6 +1,7 @@
 #include "inteiros.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 
 void inicializarLista(Lista *lista) { //inicializa a lista atribuindo tam zero
     lista->tamanho = 0;

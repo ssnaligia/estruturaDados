@@ -1,5 +1,6 @@
 #include "copia.h"
 #include <stdio.h>
+#include <locale.h>
 
 void inicializarLista(Lista *lista) {
     lista->tamanho = 0;

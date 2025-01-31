@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 #include "lista.h"
 
 void inicializarLista(Lista* lista) {

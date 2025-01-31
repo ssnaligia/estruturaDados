@@ -1,3 +1,7 @@
+/*Desenvolva um programa para armazenar um conjunto de retângulos em uma lista. Cada retângulo é
+definido pela base b e pela altura h. Além das operações tradicionais, crie uma operação que calcula a área do
+retângulo (fique à vontade para definir os parâmetros).*/
+
 #include <stdio.h>
 #include <locale.h>
 #include "retangulo.h"
@@ -17,26 +21,26 @@ int main() {
 
         switch (opcao) {
             case 1:
-                printf("Digite a base do retângulo: ");
+                printf("\nDigite a base do retângulo: ");
                 scanf("%f", &base);
-                printf("Digite a altura do retângulo: ");
+                printf("\nDigite a altura do retângulo: ");
                 scanf("%f", &altura);
                 lista = adicionarRetangulo(lista, base, altura);
-                printf("Retângulo adicionado!\n");
+                printf("\nRetângulo adicionado!\n");
                 break;
             case 2:
                 if (lista == NULL) {
-                    printf("Nenhum retângulo cadastrado.\n");
+                    printf("\nNenhum retângulo cadastrado.\n");
                 } else {
                     imprimirRetangulos(lista);
                 }
                 break;
             case 0:
-                printf("Saindo...\n");
+                printf("\nSaindo...\n");
                 liberarLista(lista);
                 break;
             default:
-                printf("Opção inválida! Tente novamente.\n");
+                printf("\nOpção inválida! Tente novamente.\n");
         }
     } while (opcao != 0);
 

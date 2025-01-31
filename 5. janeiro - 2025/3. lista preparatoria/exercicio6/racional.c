@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 #include "racional.h"
 
 int mdc(int a, int b) {

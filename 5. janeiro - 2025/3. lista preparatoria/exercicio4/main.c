@@ -2,6 +2,7 @@
 eliminar elementos repetidos. Você decide se deverá manter as listas originais ou não*/
 
 #include <stdio.h>
+#include <locale.h>
 #include "lista.h"
 
 int main() {

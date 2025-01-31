@@ -10,7 +10,7 @@ Retangulo* criarLista() {
 Retangulo* adicionarRetangulo(Retangulo* lista, float base, float altura) {
     Retangulo* novo = (Retangulo*)malloc(sizeof(Retangulo));
     if (novo == NULL) {
-        printf("Erro ao alocar memória.\n");
+        printf("\nErro ao alocar memória.\n");
         exit(1);
     }
 
@@ -24,7 +24,7 @@ Retangulo* adicionarRetangulo(Retangulo* lista, float base, float altura) {
 void imprimirRetangulos(Retangulo* lista) {
     Retangulo* atual = lista;
     while (atual != NULL) {
-        printf("Retângulo - Base: %.2f, Altura: %.2f, Área: %.2f\n",
+        printf("\nRetângulo - Base: %.2f, Altura: %.2f, Área: %.2f\n",
                atual->base, atual->altura, calcularArea(atual));
         atual = atual->proximo;
     }
